@@ -1,80 +1,112 @@
-# kickstart.nvim
+<div align="center">
+  <h1>Neovim configuration</h1>
+  <h4>A minimal Neovim configuration written in lua</h4>
+  <p>
+        <a href="https://github.com/ntk148v/neovim-config/blob/master/LICENSE">
+      <img
+        alt="License"
+        src="https://img.shields.io/github/license/ntk148v/neovim-config?style=for-the-badge"
+      />
+    </a>
+    <a href="https://github.com/ntk148v/neovim-config/stargazers">
+      <img
+        alt="Stars"
+        src="https://img.shields.io/github/stars/ntk148v/neovim-config?style=for-the-badge"
+      />
+    </a>
+    <img
+      alt="Neovim version"
+      src="https://img.shields.io/badge/Neovim-0.11+-57A143?style=for-the-badge&logo=neovim"
+    />
+    <a href="https://github.com/ntk148v/neovim-config/releases/latest">
+        <img
+          alt="Latest release"
+          src="https://img.shields.io/github/v/release/ntk148v/neovim-config?style=for-the-badge" />
+    </a>
+  </p>
+  <br />
+</div>
 
-## Introduction
+**Table of contents**
 
-A starting point for Neovim that is:
+- [1. Introduction](#1-introduction)
+- [2. Screenshots](#2-screenshots)
+- [3. Installation](#3-installation)
+- [4. File structure](#4-file-structure)
+- [5. Plugins \& LSP](#5-plugins--lsp)
+  - [5.1. Plugins](#51-plugins)
+  - [5.2. LSP](#52-lsp)
 
-* Small
-* Single-file
-* Completely Documented
+- [6. Keymaps](#6-keymaps)
+- [7. Customization](#7-customization)
+- [8. Contribution](#8-contribution)
+- [9. Guide and resources](#9-guide-and-resources)
 
-**NOT** a Neovim distribution, but instead a starting point for your configuration.
+> [!IMPORTANT]
+> **I’m currently trying to switch to using [leanpack.nvim](https://github.com/ntk148v/leanpack.nvim) instead of lazy.nvim. This is a Neovim plugin manager built on top of vim.pack (Neovim ≥ 0.12.0). You can try it out on the branch [feat/leanpack.nvim](https://github.com/ntk148v/neovim-config/tree/feat/leanpack.nvim); until leanpack.nvim is fully mature, lazy.nvim will continue to be used as the main plugin manager**.
 
-## Installation
+## 1. Introduction
 
-### Install Neovim
+[Neovim](https://neovim.io/) is a pretty cool successor to Vim, focusing on compatibility while adding asynchronous plugin functionality and trying to clean up the code base. Having been fed up at various times with both Sublime Text (2 and 3) and Atom, and after realizing how much development I do over SSH, it seemed reasonable to check out using vim (or nvim, in this case) as my IDE. The advantages essentially boil down to:
 
-Kickstart.nvim targets *only* the latest
-['stable'](https://github.com/neovim/neovim/releases/tag/stable) and latest
-['nightly'](https://github.com/neovim/neovim/releases/tag/nightly) of Neovim.
-If you are experiencing issues, please make sure you have the latest versions.
+- Consistent IDE over SSH or locally,
+- No need to ever use the mouse while coding (takes longer to learn, but is faster; this is aided by vim-easymotion and Ctrl-Space),
+- It’s been around forever, and frankly, probably always will be.
 
-### Install External Dependencies
-
-External Requirements:
-- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
-- [ripgrep](https://github.com/BurntSushi/ripgrep#installation),
-  [fd-find](https://github.com/sharkdp/fd#installation)
-- Clipboard tool (xclip/xsel/win32yank or other depending on the platform)
-- A [Nerd Font](https://www.nerdfonts.com/): optional, provides various icons
-  - if you have it set `vim.g.have_nerd_font` in `init.lua` to true
-- Emoji fonts (Ubuntu only, and only if you want emoji!) `sudo apt install fonts-noto-color-emoji`
-- Language Setup:
-  - If you want to write Typescript, you need `npm`
-  - If you want to write Golang, you will need `go`
-  - etc.
-
-> [!NOTE]
-> See [Install Recipes](#Install-Recipes) for additional Windows and Linux specific notes
-> and quick install snippets
-
-### Install Kickstart
-
-> [!NOTE]
-> [Backup](#FAQ) your previous configuration (if any exists)
-
-Neovim's configurations are located under the following paths, depending on your OS:
-
-| OS | PATH |
-| :- | :--- |
-| Linux, MacOS | `$XDG_CONFIG_HOME/nvim`, `~/.config/nvim` |
-| Windows (cmd)| `%localappdata%\nvim\` |
-| Windows (powershell)| `$env:LOCALAPPDATA\nvim\` |
-
-#### Recommended Step
-
-[Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repo
-so that you have your own copy that you can modify, then install by cloning the
-fork to your machine using one of the commands below, depending on your OS.
+Therefore, I decided to create this repository.
 
 > [!NOTE]
-> Your fork's URL will be something like this:
-> `https://github.com/<your_github_username>/kickstart.nvim.git`
+>
+> 1. There are several versions, checkout [CHANGELOG](./CHANGELOG.md).
+> 2. This configuration is meant as a starting point, and it fits my needs only. If you want to customize it, jump to [6. Customization](#6-customization).
 
-You likely want to remove `lazy-lock.json` from your fork's `.gitignore` file
-too - it's ignored in the kickstart repo to make maintenance easier, but it's
-[recommended to track it in version control](https://lazy.folke.io/usage/lockfile).
+## 2. Screenshots
 
-#### Clone kickstart.nvim
+|                                                                        |                                                                        |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| <img src="screenshots/nvim1.png" alt="dark" style="border-radius:1%"/> | <img src="screenshots/nvim2.png" alt="dark" style="border-radius:1%"/> |
+| <img src="screenshots/nvim3.png" alt="dark" style="border-radius:1%"/> | <img src="screenshots/nvim4.png" alt="dark" style="border-radius:1%"/> |
+| <img src="screenshots/nvim5.png" alt="dark" style="border-radius:1%"/> | <img src="screenshots/nvim6.png" alt="dark" style="border-radius:1%"/> |
+| <img src="screenshots/nvim7.png" alt="dark" style="border-radius:1%"/> | <img src="screenshots/nvim8.png" alt="dark" style="border-radius:1%"/> |
+
+## 3. Installation
+
+- Requirements:
+  - Install [neovim >= 0.11.0](https://github.com/neovim/neovim/wiki/Installing-Neovim#install-from-package), or you can [build it](https://github.com/neovim/neovim/wiki/Building-Neovim#) yourself.
+  - git >= 2.19.0 (for partial clones support)
+  - [fd](https://github.com/sharkdp/fd) and [ripgrep](https://github.com/BurntSushi/ripgrep).
+  - [treesitter-cli](https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md).
+  - I recommend using a [nerdfonts](https://www.nerdfonts.com/font-downloads) (optional)
+- Backup your current neovim config, if necessary:
+
+```shell
+mv ~/.config/nvim ~/.config/nvim.bak
+```
+
+- Neovim's configurations are located under the following paths, depending on your OS:
+
+| OS                   | PATH                                      |
+| :------------------- | :---------------------------------------- |
+| Linux, MacOS         | `$XDG_CONFIG_HOME/nvim`, `~/.config/nvim` |
+| Windows (cmd)        | `%localappdata%\nvim\`                    |
+| Windows (powershell) | `$env:LOCALAPPDATA\nvim\`                 |
+
+- [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repo so that you have your own copy that you can modify, then install by cloning the fork to your machine using one of the commands below, depending on your OS.
+
+> [!NOTE]
+> Your fork's url will be something like this:
+> `https://github.com/<your_github_username>/neovim-config.git`
+
+- Get your configuration:
 
 > [!NOTE]
 > If following the recommended step above (i.e., forking the repo), replace
-> `nvim-lua` with `<your_github_username>` in the commands below
+> `ntk148v` with `<your_github_username>` in the commands below
 
 <details><summary> Linux and Mac </summary>
 
-```sh
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+```shell
+git clone https://github.com/ntk148v/neovim-config.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 </details>
@@ -83,159 +115,170 @@ git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HO
 
 If you're using `cmd.exe`:
 
-```
-git clone https://github.com/nvim-lua/kickstart.nvim.git "%localappdata%\nvim"
+```shell
+git clone https://github.com/ntk148v/neovim-config.git "%localappdata%\nvim"
 ```
 
 If you're using `powershell.exe`
 
-```
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
+```shell
+git clone https://github.com/ntk148v/neovim-config.git "${env:LOCALAPPDATA}\nvim"
 ```
 
 </details>
 
-### Post Installation
+- Start Neovim, Lazy should be installed automatically, then it will install plugins.
 
-Start Neovim
-
-```sh
+```shell
 nvim
 ```
 
-That's it! Lazy will install all the plugins you have. Use `:Lazy` to view
-the current plugin status. Hit `q` to close the window.
+- Restart Neovim and enjoy it.
+- Keep updated: You should keep updated using `git pull`.
 
-#### Read The Friendly Documentation
+## 4. File structure
 
-Read through the `init.lua` file in your configuration folder for more
-information about extending and exploring Neovim. That also includes
-examples of adding popularly requested plugins.
+The files under config will be automatically loaded at the appropriate time, so you don't need to require those files manually.
 
-> [!NOTE]
-> For more information about a particular plugin check its repository's documentation.
-
-
-### Getting Started
-
-[The Only Video You Need to Get Started with Neovim](https://youtu.be/m8C0Cq9Uv9o)
-
-### FAQ
-
-* What should I do if I already have a pre-existing Neovim configuration?
-  * You should back it up and then delete all associated files.
-  * This includes your existing init.lua and the Neovim files in `~/.local`
-    which can be deleted with `rm -rf ~/.local/share/nvim/`
-* Can I keep my existing configuration in parallel to kickstart?
-  * Yes! You can use [NVIM_APPNAME](https://neovim.io/doc/user/starting.html#%24NVIM_APPNAME)`=nvim-NAME`
-    to maintain multiple configurations. For example, you can install the kickstart
-    configuration in `~/.config/nvim-kickstart` and create an alias:
-    ```
-    alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
-    ```
-    When you run Neovim using `nvim-kickstart` alias it will use the alternative
-    config directory and the matching local directory
-    `~/.local/share/nvim-kickstart`. You can apply this approach to any Neovim
-    distribution that you would like to try out.
-* What if I want to "uninstall" this configuration:
-  * See [lazy.nvim uninstall](https://lazy.folke.io/usage#-uninstalling) information
-* Why is the kickstart `init.lua` a single file? Wouldn't it make sense to split it into multiple files?
-  * The main purpose of kickstart is to serve as a teaching tool and a reference
-    configuration that someone can easily use to `git clone` as a basis for their own.
-    As you progress in learning Neovim and Lua, you might consider splitting `init.lua`
-    into smaller parts. A fork of kickstart that does this while maintaining the
-    same functionality is available here:
-    * [kickstart-modular.nvim](https://github.com/dam9000/kickstart-modular.nvim)
-  * Discussions on this topic can be found here:
-    * [Restructure the configuration](https://github.com/nvim-lua/kickstart.nvim/issues/218)
-    * [Reorganize init.lua into a multi-file setup](https://github.com/nvim-lua/kickstart.nvim/pull/473)
-
-### Install Recipes
-
-Below you can find OS specific install instructions for Neovim and dependencies.
-
-After installing all the dependencies continue with the [Install Kickstart](#Install-Kickstart) step.
-
-#### Windows Installation
-
-<details><summary>Windows with Microsoft C++ Build Tools and CMake</summary>
-Installation may require installing build tools and updating the run command for `telescope-fzf-native`
-
-See `telescope-fzf-native` documentation for [more details](https://github.com/nvim-telescope/telescope-fzf-native.nvim#installation)
-
-This requires:
-
-- Install CMake and the Microsoft C++ Build Tools on Windows
-
-```lua
-{'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-```
-</details>
-<details><summary>Windows with gcc/make using chocolatey</summary>
-Alternatively, one can install gcc and make which don't require changing the config,
-the easiest way is to use choco:
-
-1. install [chocolatey](https://chocolatey.org/install)
-either follow the instructions on the page or use winget,
-run in cmd as **admin**:
-```
-winget install --accept-source-agreements chocolatey.chocolatey
+```shell
+tree ~/.config/nvim
+├── init.lua
+├── lazy-lock.json
+└── lua
+    ├── autocmds.lua
+    ├── custom.lua
+    ├── mappings.lua
+    ├── options.lua
+    ├── plugins
+    │   ├── configs
+    │   │   ├── cmp.lua
+    │   │   ├── gitsigns.lua
+    │   │   ├── lspconfig.lua
+    │   │   ├── lualine.lua
+    │   │   ├── luasnip.lua
+    │   │   ├── mason.lua
+    │   │   ├── mini-files.lua
+    │   │   ├── null-ls.lua
+    │   │   └── treesitter.lua
+    │   └── init.lua
+    └── sample_custom.lua
 ```
 
-2. install all requirements using choco, exit the previous cmd and
-open a new one so that choco path is set, and run in cmd as **admin**:
-```
-choco install -y neovim git ripgrep wget fd unzip gzip mingw make
-```
-</details>
-<details><summary>WSL (Windows Subsystem for Linux)</summary>
+## 5. Plugins & LSP
 
-```
-wsl --install
-wsl
-sudo add-apt-repository ppa:neovim-ppa/unstable -y
-sudo apt update
-sudo apt install make gcc ripgrep unzip git xclip neovim
-```
-</details>
+### 5.1. Plugins
 
-#### Linux Install
-<details><summary>Ubuntu Install Steps</summary>
+| Plugin                                                                        | Description                                                                                                                                        |
+| ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [lazy.nvim](https://github.com/folke/lazy.nvim)                               | A modern plugin manager for Neovim                                                                                                                 |
+| [mason.nvim](https://github.com/williamboman/mason.nvim)                      | Portable package manager for Neovim that runs everywhere Neovim runs. Easily install and manage LSP servers, DAP servers, linters, and formatters. |
+| [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)                    | A collection of common configurations for Neovim's built-in language server client                                                                 |
+| [gitsigns](https://github.com/lewis6991/gitsigns.nvim)                        | Super fast git decorations implemented purely in lua/teal                                                                                          |
+| [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)         | Nvim Treesitter configurations and abstraction layer                                                                                               |
+| [blink.cmp](https://github.com/saghen/blink.cmp)                              | Performant, batteries-included completion plugin                                                                                                   |
+| [LuaSnip](https://github.com/L3MON4D3/LuaSnip)                                | Snippet Engine for Neovim written in Lua                                                                                                           |
+| [nvim-autopairs](https://github.com/windwp/nvim-autopairs)                    | A super powerful autopairs for Neovim                                                                                                              |
+| [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons)           | Lua `fork` of vim-web-devicons for neovim                                                                                                          |
+| [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)                  | A blazing fast and easy to configure neovim statusline plugin written in pure lua.                                                                 |
+| [norcalli/nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua) | The fastest Neovim colorizer.                                                                                                                      |
+| [nvim-mini/mini.pick](https://github.com/nvim-mini/mini.pick)                 | Fast and minimal fuzzy picker.                                                                                                                     |
+| [nvim-mini/mini.extra](https://github.com/nvim-mini/mini.extra)               | Extra pickers for mini.pick.                                                                                                                       |
+| [rosé-pine](https://github.com/rose-pine/neovim)                              | Soho vibes for Neovim                                                                                                                              |
+| [nvimtools/none-ls.nvim](https://github.com/nvimtools/none-ls.nvim)           | null-ls.nvim reloaded / Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua.                                 |
+| [folke/which-key.nvim](https://github.com/folke/which-key.nvim)               | Create key bindings that stick. WhichKey helps you remember your Neovim keymaps, by showing available keybindings in a popup as you type.          |
+| [nvim-mini/mini.files](https://github.com/nvim-mini/mini.files)               | Navigate and manipulate file system. Part of 'mini.nvim' library.                                                                                  |
+| [nvim-mini/mini.misc](https://github.com/nvim-mini.misc)                      | About Neovim Lua plugin with miscellaneous useful functions. Part of 'mini.nvim' library.                                                          |
 
-```
-sudo add-apt-repository ppa:neovim-ppa/unstable -y
-sudo apt update
-sudo apt install make gcc ripgrep unzip git xclip neovim
-```
-</details>
-<details><summary>Debian Install Steps</summary>
+### 5.2. LSP
 
-```
-sudo apt update
-sudo apt install make gcc ripgrep unzip git xclip curl
+By default, the follow LSP servers are installed and configured:
 
-# Now we install nvim
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-sudo rm -rf /opt/nvim-linux-x86_64
-sudo mkdir -p /opt/nvim-linux-x86_64
-sudo chmod a+rX /opt/nvim-linux-x86_64
-sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+- python - [ruff_lsp](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#ruff_lsp)
+- golang - [gopls](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#gopls)
+- docker - [dockerls](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#dockerls)
+- bash - [bashls](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#bashls)
+- vim - [vimls](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#vimls)
+- yaml - [yamlls](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#yamlls)
+- json - [jsonls](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#jsonls)
 
-# make it available in /usr/local/bin, distro installs to /usr/bin
-sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/
-```
-</details>
-<details><summary>Fedora Install Steps</summary>
+Furthermore, it integrates with [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) to provide rich syntax highlighting and other language parsing magic.
 
-```
-sudo dnf install -y gcc make git ripgrep fd-find unzip neovim
-```
-</details>
+If your language is not supported, please follow this:
 
-<details><summary>Arch Install Steps</summary>
+- Check if LSP support is available in the [lspconfig repo](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md). To install a supported language server with [mason](https://github.com/williamboman/mason.nvim):
 
+```vim
+:LspInstall `<your_language_server>`
 ```
-sudo pacman -S --noconfirm --needed gcc make git ripgrep fd unzip neovim
-```
-</details>
 
+- Check if your syntax is supported in the [treesitter repo](https://github.com/nvim-treesitter/nvim-treesitter). To install a language syntax highlight, run:
+
+```vim
+:TSInstall `<language_to_install>`
+```
+
+You can add more LSP servers and language syntax highlighting by editing the custom file.
+
+## 6. Keymaps
+
+These are the default keymaps, in the following shortcuts, the `<leader>`+` key is set up to `` (space) character, check: [keymaps.lua](./nvim/lua/core/keymaps.lua).
+
+| Shortcut                       | Mode   | Description                                      |
+| ------------------------------ | ------ | ------------------------------------------------ |
+| <kbd>kk</kbd>                  | Insert | Esc with `kk`                                    |
+| <kbd>rr</kbd>                  | Normal | Reload configuration file                        |
+| <kbd>tt</kbd>                  | Normal | Create terminal                                  |
+| `<leader>`+<kbd>fm</kbd>       | Normal | Open mini.files (Directory of the current files) |
+| `<leader>`+<kbd>fM</kbd>       | Normal | Open mini.files (cwd)                            |
+| `<leader>`+<kbd>sh</kbd>       | Normal | Open mini.pick to search help                    |
+| `<leader>`+<kbd>sk</kbd>       | Normal | Open mini.pick to search keymaps                 |
+| `<leader>`+<kbd>sf</kbd>       | Normal | Open mini.pick to search files                   |
+| `<leader>`+<kbd>sg</kbd>       | Normal | Open mini.pick to search by live grep            |
+| `<leader>`+<kbd>sd</kbd>       | Normal | Open mini.pick to search diagnostics             |
+| `<leader>`+<kbd>sr</kbd>       | Normal | Open mini.pick to resume last picker             |
+| `<leader>`+<kbd>s.</kbd>       | Normal | Open mini.pick to search recent files            |
+| `<leader>`+`<leader>`          | Normal | Open mini.pick to search existing buffers        |
+| `<leader>`+<kbd>sc</kbd>       | Normal | Open mini.pick to list git commits               |
+| `<leader>`+<kbd>/</kbd>        | Normal | Fuzzily search in current buffer                 |
+| `<leader>`+<kbd>sn</kbd>       | Normal | Search Neovim config files                       |
+| `<leader>`+<kbd>wh/j/k/l</kbd> | Normal | Move around splits                               |
+| <kbd>mm</kbd>                  | Normal | Comment/Uncomment line                           |
+
+There are many default keymaps, you can check it using `:map` command. There are also other variants:
+
+- `:nmap` for normal mode mappings
+- `:vmap` for visual mode mappings
+- `:imap` for insert mode mappings
+
+The above list is not complete. Typing `:help map` in Vim will give you more info.
+
+## 7. Customization
+
+You can customize this configuration by creating the `custom` module. You can choose either two ways:
+
+- Create `${XDG_CONFIG_HOME:-$HOME/.config}/nvim/lua/custom.lua` file.
+- Create module `${XDG_CONFIG_HOME:-$HOME/.config}/nvim/lua/custom/` if your custom configuration is too long, and you want to separate it into multiple files.
+
+Checkout the [sample custom](./nvim/lua/sample_custom.lua) file for the starting point. The logic is taken from [CyberNvim](https://github.com/pgosar/CyberNvim/wiki/Configuration#predefined-sections). There are a number of defined sections in the config:
+
+- `M.setup_sources` is used to add extra sources to connect to Null-ls - you can find a list of sources [here](https://github.com/nvimtools/none-ls.nvim/blob/main/doc/BUILTINS.md). The parameter b is just short for null_ls.builtins.
+- `M.treesitter_parsers` is used to add extra [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter) highlighter. Actually, you don't need this, the current config will automatically detect file type and download the treesitter parser.
+- `M.plugins` is where you will add your own plugin definitions.
+- `M.configs` is the most important section of your own configuration. This is where you can define any autocommands, require any files, or otherwise completely port your current configuration.
+- `M.formatting_servers` is used to setup auto formatting rules. You need to select the language server that will provide autoformatting capabilities
+
+## 8. Contribution
+
+Feel free to file an issue or open a pull request. You're welcome!
+
+## 9. Guide and resources
+
+- [nanotee/nvim-lua-guide](https://github.com/nanotee/nvim-lua-guide)
+- [brainfucksec/neovim-lua](https://github.com/brainfucksec/neovim-lua)
+- [LunarVim/Neovim-from-scratch](https://github.com/LunarVim/Neovim-from-scratch)
+- [LunarVim/nvim-basic-ide](https://github.com/LunarVim/nvim-basic-ide)
+
+&nbsp;
+
+<p align="center">Copyright &copy; 2022-present <a href="https://github.com/ntk148v" target="_blank">Kien Nguyen Tuan</a>
+<p align="center"><a href="https://github.com/ntk148v/neovim-config/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=Apache2.0"/></a></p>
