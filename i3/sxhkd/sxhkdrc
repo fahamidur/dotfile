@@ -1,6 +1,6 @@
 # Launch Browser (Firefox)
 super + b
-	firefox 
+	firefox
 
 # Launch Private Browser (Firefox Incognito Mode)
 super + shift + b
@@ -11,8 +11,15 @@ super + t
 	wezterm
 
 # Change Walpaper
+# Old one
+# super + shift + w
+# 	bindsym $mod+Shift+w exec --no-startup-id ~/.scripts/nitrogen-cycle-walpaper.sh
+#
+
+# Change Walpaper
 super + shift + w
-	bindsym $mod+Shift+w exec --no-startup-id ~/.scripts/nitrogen-cycle-walpaper.sh
+    ~/.config/i3/scripts/wallpaper.sh
+
 
 
 # Toggle Scratchpad Terminal
@@ -42,11 +49,11 @@ super + v
 # Show Keybinding Help Script
 super + h
 	~/.config/i3/scripts/help
-    
-# Paste to note (bashrc note)   
+
+# Paste to note (bashrc note)
 super + shift + v
     bash -ic 'note clip && notify-send " Clipboard saved to notes"'
- 
+
 # Take a Screenshot (Region Select)
 super + Print
 	flameshot gui --path ~/Screenshots/
@@ -202,15 +209,15 @@ super + shift + Right
 # Volume Up
 super + Insert
 	~/.config/i3/scripts/changevolume up
-    
+
 # Volume Down
 super + Delete
 	~/.config/i3/scripts/changevolume down
-	
+
 # Toggle Mute
 super + m
 	~/.config/i3/scripts/changevolume mute
-	
+
 # Volume Up (Media Key)
 XF86AudioRaiseVolume
 	pamixer -i 2
@@ -246,7 +253,7 @@ super + control + space
 # Focus Parent Container
 super + alt + a
 	i3-msg focus parent
-    
+
 # Exit i3
 super + shift + q
 	i3-msg exit
