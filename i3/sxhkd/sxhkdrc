@@ -36,7 +36,7 @@ super + f
 
 # Open Nvim in home directory
 super + e
-    alacritty -e /usr/local/bin/nvim
+    alacritty -e emacs -nw
 
 # Launch GIMP (Image Editor)
 super + g
